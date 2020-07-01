@@ -37,32 +37,32 @@ excitation_axial_length = 300  # um
 # image paratmeters
 image_pixels = 500
 images = 500
-pixel = .195  # um
+pixel = .19  # um
 z_step = .15 # um
 zoom_factor = 1  # to better sample the spaces. Go back in the final step to
                  # match the image dimensions for the deconvolution algorithm
 range_factor = 1  # explore a larger range during the simulation
 xy_sampling = np.linspace(-image_pixels * pixel / 2 * range_factor,
-                          image_pixels * pixel / 2 * range_factor, 
+                          image_pixels * pixel / 2 * range_factor,
                           image_pixels * zoom_factor)
 z_sampling = np.linspace(-images * z_step / 2 * range_factor,
-                          images * z_step / 2 * range_factor, 
+                          images * z_step / 2 * range_factor,
                           images * zoom_factor)
 xy_step = np.abs(xy_sampling[0]-xy_sampling[1])
 z_step = np.abs(z_sampling[0]-z_sampling[1])
 
 # pupil grid (derived by the image grid)
 xy_sampling_pupil_det = np.linspace(-1 / xy_step / 2 * wavelength * focal_det,
-                                1 / xy_step / 2 * wavelength * focal_det, 
+                                1 / xy_step / 2 * wavelength * focal_det,
                                 len(xy_sampling))
 z_sampling_pupil_det = np.linspace(-1 / z_step / 2 * wavelength * focal_det,
-                                1 / z_step / 2 * wavelength * focal_det, 
+                                1 / z_step / 2 * wavelength * focal_det,
                                 len(z_sampling))
 xy_sampling_pupil_ex = np.linspace(-1 / xy_step / 2 * wavelength * focal_ex,
-                                1 / xy_step / 2 * wavelength * focal_ex, 
+                                1 / xy_step / 2 * wavelength * focal_ex,
                                 len(xy_sampling))
 z_sampling_pupil_ex = np.linspace(-1 / z_step / 2 * wavelength * focal_ex,
-                                1 / z_step / 2 * wavelength * focal_ex, 
+                                1 / z_step / 2 * wavelength * focal_ex,
                                 len(z_sampling))
 
 # Re, Ri, theta, phi = of.mask_geometry(200, .3, wavelength, 20000, refr_index)
@@ -82,25 +82,25 @@ z_sampling_pupil_ex = np.linspace(-1 / z_step / 2 * wavelength * focal_ex,
 #     shell = np.sqrt(xy_step**2  + xy_step**2 + z_step**2)
 
 pupil_det = of.circular_pupil(xy_sampling_pupil_det,
-                          z_sampling_pupil_det, 
-                          focal_det, 
-                          NA_det, 
+                          z_sampling_pupil_det,
+                          focal_det,
+                          NA_det,
                           refr_index)
 psf_det = np.abs(mtm.FT3(pupil_det))**2
 val_max, val_min = psf_det.max(), psf_det.min()
 psf_det = (psf_det - val_min)/(val_max - val_min)
 
 pupil_ex = of.circular_pupil(xy_sampling_pupil_ex,
-                          z_sampling_pupil_ex, 
-                          focal_ex, 
-                          NA_ex, 
+                          z_sampling_pupil_ex,
+                          focal_ex,
+                          NA_ex,
                           refr_index)
-annular = of.annular_pupil(xy_sampling_pupil_ex, 
-                             z_sampling_pupil_ex, 
+annular = of.annular_pupil(xy_sampling_pupil_ex,
+                             z_sampling_pupil_ex,
                              excitation_axial_length,
                              wavelength,
-                             focal_ex, 
-                             NA_ex, 
+                             focal_ex,
+                             NA_ex,
                              refr_index,
                              pupil_ex)
 psf_bessel = np.abs(mtm.FT3(annular))**2
@@ -109,11 +109,11 @@ psf_bessel = (psf_bessel - val_min)/(val_max - val_min)
 
 lattice, mask = of.lattice_mask(xy_sampling_pupil_ex,
                                 z_sampling_pupil_ex,
-                                xy_sampling, 
-                                z_sampling, 
+                                xy_sampling,
+                                z_sampling,
                                 annular,
                                 psf_bessel,
-                                wavelength, 
+                                wavelength,
                                 focal_ex)
 psf_lattice = np.abs(mtm.FT3(lattice))**2
 val_max, val_min = psf_lattice.max(), psf_lattice.min()
@@ -131,7 +131,7 @@ val_max, val_min = psf_total.max(), psf_total.min()
 psf_total_norm = (psf_total - val_min)/(val_max - val_min)
 
 psf_for_dec = psf_total_norm[125:375, 125:375, :]
-psf_for_dec = sp.ndimage.zoom(psf_for_dec, [1, 1, 1/2]) 
+psf_for_dec = sp.ndimage.zoom(psf_for_dec, [1, 1, 1/2])
 psf_for_dec_final = psf_for_dec[:,:,]
 
 data = tiff.imread('cell_6_substack.tif')
@@ -152,7 +152,7 @@ result = of.deconvolve(organized, psf_for_dec_final, 5, 1)
 
 val_max, val_min = result.max(), result.min()
 result = (result - val_min)/(val_max - val_min)
-saving = np.zeros((data.shape[0], data.shape[1], data.shape[2]), 
+saving = np.zeros((data.shape[0], data.shape[1], data.shape[2]),
                   dtype = np.uint16)
 
 # result = of.deconvolve(organized, psf_for_dec, 70, 1) 
@@ -167,8 +167,8 @@ tiff.imsave('cel_6_sub_dec.tif', saving)
 
 # for i in range(pupil.shape[2]):
 #     pupil[:,:,i] = pupil[:,:,i] * annulus
-    
-    
+
+
 # bessel_pupil = of.annular_pupil(xy_sampling_pupil,
 #                                 z_sampling_pupil,
 #                                 20000, 
@@ -212,7 +212,7 @@ tiff.imsave('cel_6_sub_dec.tif', saving)
 # centered_profile[:] = excitation_profile_1D[\
 #                       int(maxarg-centered_profile.shape[0]/2):\
 #                          int(maxarg+centered_profile.shape[0]/2)]
-    
+
 # val_max, val_min = centered_profile.max(), centered_profile.min()
 # centered_profile = (centered_profile - val_min)/(val_max - val_min)
 
@@ -234,11 +234,7 @@ tiff.imsave('cel_6_sub_dec.tif', saving)
 #                   dtype = np.uint16)
 # for i in range(data.shape[0]):
 #     saving[i,:,:] = result[:,:,i].astype(np.uint16)
- 
 # tiff.imsave('double_z_dev.tif', saving)
-            
-    
-
 
 
 
