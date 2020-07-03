@@ -14,6 +14,9 @@ from scipy.signal import argrelextrema
 from skimage.feature import peak_local_max
 import scipy as sp
 import optics_funcions as of
+from importlib import reload
+reload(mtm)
+reload(of)
 
 
 plt.ion()
@@ -23,25 +26,24 @@ NA_det = 1.
 refr_index = 1.33
 wavelength_det = .54  # um
 focal_det = 9 * 10**3  # um
-
 wavelength_det = wavelength_det/ refr_index
 
 NA_ex = .24
 wavelength = .488  # um
 focal_ex = 20 * 10**3  # um
-
 wavelength =  wavelength/refr_index # not in vacuum!
-
-excitation_axial_length = 300  # um
+excitation_axial_length = 300  # um, this is also the desired FOV dimension
 
 # image paratmeters
-image_pixels = 500
-images = 500
-pixel = .19  # um
+image_pixels = 500 # a.
+images = 500 # b. these parameters can ensure a square image
+pixel = .195  # um
 z_step = .15 # um
 zoom_factor = 1  # to better sample the spaces. Go back in the final step to
                  # match the image dimensions for the deconvolution algorithm
 range_factor = 1  # explore a larger range during the simulation
+
+# image grid
 xy_sampling = np.linspace(-image_pixels * pixel / 2 * range_factor,
                           image_pixels * pixel / 2 * range_factor,
                           image_pixels * zoom_factor)
@@ -65,6 +67,7 @@ z_sampling_pupil_ex = np.linspace(-1 / z_step / 2 * wavelength * focal_ex,
                                 1 / z_step / 2 * wavelength * focal_ex,
                                 len(z_sampling))
 
+# probably to be cancelled
 # Re, Ri, theta, phi = of.mask_geometry(200, .3, wavelength, 20000, refr_index)
 # annulus = np.zeros((image_pixels, image_pixels))
 # x, y = np.linspace(-1 / xy_step / 2 * wavelength * 20000,
