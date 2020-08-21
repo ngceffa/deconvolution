@@ -27,7 +27,7 @@ def mask_geometry (axial_length, NA, wavelength, focal, refr_index, \
 
     # i'm using the correct refractive index for a water immersion objective
     # McCutchen calcs
-    a = wavelength / axial_length / refr_index * 2
+    a = wavelength / axial_length / refr_index
     R_ext = NA * focal / refr_index  # correct ?
 
     X = np.arcsin(R_ext / focal * refr_index)
