@@ -1,11 +1,11 @@
+import sys
+sys.path.append('/Users/ngc/coding/deconvolution')
 import numpy as np
 import matplotlib.pyplot as plt
 import tifffile as tiff
 from scipy.special import j0, j1
 import mayavi.mlab as mlab
-import sys
 import time
-sys.path.append('Users/ngc/Desktop')
 from numba import jit
 import my_math_functions as mtm
 import plotly.graph_objects as go
@@ -21,16 +21,16 @@ plt.ion()
 # objectives parameters
 NA_det = 1.
 refr_index = 1.33
-wavelength_det = .54  # um
+wavelength_det = .54 # um
 focal_det = 9 * 10**3  # um
 
 wavelength_det = wavelength_det/ refr_index
 
-NA_ex = .24
+NA_ex = .188
 wavelength = .488  # um
 focal_ex = 20 * 10**3  # um
 
-wavelength =  wavelength/refr_index # not in vacuum!
+wavelength = wavelength/refr_index # not in vacuum!
 
 excitation_axial_length = 300  # um
 
@@ -59,8 +59,8 @@ z_sampling_pupil_det = np.linspace(-1 / z_step / 2 * wavelength * focal_det,
                                 1 / z_step / 2 * wavelength * focal_det,
                                 len(z_sampling))
 xy_sampling_pupil_ex = np.linspace(-1 / xy_step / 2 * wavelength * focal_ex,
-                                1 / xy_step / 2 * wavelength * focal_ex,
-                                len(xy_sampling))
+                                   1 / xy_step / 2 * wavelength * focal_ex,
+                                   len(xy_sampling))
 z_sampling_pupil_ex = np.linspace(-1 / z_step / 2 * wavelength * focal_ex,
                                 1 / z_step / 2 * wavelength * focal_ex,
                                 len(z_sampling))
