@@ -70,7 +70,7 @@ def deconvolve(stack,
 def circular_pupil(spatial_sampling_xy,
                    spatial_sampling_z,
                    EFL,
-                   NA, 
+                   NA,
                    refr_index):
     x, y, z = np.copy(spatial_sampling_xy),\
               np.copy(spatial_sampling_xy),\

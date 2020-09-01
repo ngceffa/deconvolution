@@ -8,16 +8,15 @@ reload(mtm)
 
 
 plt.ion()
-
 # |> objectives' parameters
 NA_det = 1.
 refr_index = 1.33
 wavelength_det = .54 # um
 EFL_det = 9 * 10**3  # um
-NA_ex = .3
+NA_ex = .29
 wavelength = .488  # um
 EFL_ex = 20 * 10**3  # um
-excitation_axial_length = 300  # um
+excitation_axial_length = 150  # um
 # image paratmeters
 image_pixels = 500
 images = 500
@@ -47,7 +46,7 @@ xy_sampling_pupil_ex = np.linspace(-1 / xy_step / 2 * wavelength * EFL_ex,
 z_sampling_pupil_ex = np.linspace(-1 / z_step / 2 * wavelength * EFL_ex,
                                   1 / z_step / 2 * wavelength * EFL_ex,
                                   len(z_sampling))
-
+# -><- -><-
 pupil_det = of.circular_pupil(xy_sampling_pupil_det,
                               z_sampling_pupil_det,
                               EFL_det,
@@ -82,3 +81,4 @@ lattice, mask = of.lattice_mask(xy_sampling_pupil_ex,
 psf_lattice = np.abs(mtm.FT3(lattice))**2
 val_max, val_min = psf_lattice.max(), psf_lattice.min()
 psf_lattice_norm = (psf_lattice - val_min)/(val_max - val_min)
+
