@@ -1,14 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import tifffile as tiff
 from scipy.special import j0, j1
 import mayavi.mlab as mlab
 import sys
-import time
 sys.path.append('Users/ngc/Desktop')
 from numba import jit
 import my_math_functions as mtm
-import plotly.graph_objects as go
 import mayavi.mlab as mlab
 from scipy.signal import argrelextrema
 from skimage.feature import peak_local_max
@@ -52,7 +49,7 @@ def mask_geometry (axial_length, NA, wavelength, EFL, refr_index, \
 
     return R_ext, R_int
 
-def deconvolve(stack, 
+def deconvolve(stack,
                psf, 
                iterations, 
                R_factor):
@@ -114,7 +111,7 @@ def lattice_mask(pupil_sampling_xy,
     print ('\nfirst min:', first_min, 'um')
     print ('\nfirst max: ', first_max, 'um')
     print ('\n\'Total\' central peak: ', first_min * 2., 'um')
-    
+
     seed = first_max * 2
     reciprocal_seed = wavelength * EFL / seed
     stripes_3D = np.zeros((annulus.shape))
