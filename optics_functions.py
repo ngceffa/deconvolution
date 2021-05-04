@@ -75,7 +75,7 @@ def circular_pupil(spatial_sampling_xy,
     focal = EFL * refr_index
     extent_xy = len(spatial_sampling_xy)
     extent_z = len(spatial_sampling_z)
-    step = np.sqrt((x[1]-x[0])**2 + (y[1]-y[0])**2 + (z[1]-z[0])**2)
+    step = np.sqrt((x[1] - x[0])**2 + (y[1]-y[0])**2 + (z[1]-z[0])**2)
     shell_thickness = step * np.sqrt(2)
     theta = np.arcsin((NA/refr_index))
     pupil = np.zeros((extent_xy, extent_xy, extent_z))
